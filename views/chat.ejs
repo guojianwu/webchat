@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/iview@2.0.0-rc.18/dist/styles/iview.css">
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+    <div id="app">
+       <div id="top">
+            <p><a href="#" class="back" @click="back">＜</a><span>{{liaotian.ltname}}</span></p>
+       </div>
+        
+        
+        <div id="center">
+                <div v-for="neiron in liaotian.ltcontent" :class="neiron.whosend==sessionInfo.sessionNmae?'comn ziji':'comn'">
+                       <div class="img">
+                           <img :src="imgQianzui+neiron.whosend+imgHouzui" alt="">
+                       </div>
+                        <div class="con">
+                            <p class="text">{{neiron.ltneiron}}</p>
+                            <p class="time">{{neiron.lttime}}</p>
+                        </div>
+                </div>
+        </div>
+        
+        
+
+        <div id="foot">
+            <input type="text" class="text" v-model="sendContent">
+            <button class="send" @click="send">发送</button>
+        </div>
+    </div>
+</body>
+
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<script src="https://unpkg.com/iview@2.0.0-rc.18/dist/iview.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="/js/rem.js"></script>
+<script>
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            scroll:'',
+            imgQianzui:'/touxiang/',
+            imgHouzui:'.jpg',
+            sendContent:'',
+            showCenter:1,
+            iconColor:'green',
+            sessionInfo:[],
+            liaotian:[],
+            sendname:''
+        },
+//        created(){
+//            this.getSession();
+////            var sendWho=window.location.href;
+//            var sendWho= location.href;
+//            console.log(sendWho)
+//        },
+        mounted: function () {
+            var _this=this;
+            this.$nextTick(function () {
+                _this.getSession();
+                _this.sendname=localStorage.getItem("name");
+                 _this.scrollBottom();
+                //_this.clearweidu();
+                 //_this.socket();
+
+                //window.addEventListener('scroll',_this.scrollBottom)
+            })
+        },
+        methods:{
+            clearweidu(){
+                if(this.liaotian.weidu==0){
+                    return;
+                }
+                axios.post('/clearweidu',{
+                    whoclear:this.sessionInfo.sessionNmae,
+                    clearwho:this.sendname
+                }).then(function(result){
+                    //console.log(result)
+                })
+              console.log(this.liaotian.weidu)
+            },
+            socket(){
+                var _this=this;
+                var socket=io();
+                socket.on(this.sessionInfo.sessionNmae,function(msg){
+                    _this.getUserInfo();
+                    _this.scrollBottom();
+                    //console.log(msg)
+                })
+            },
+            scrollBottom(){
+                setTimeout(function(){
+                    var center=document.getElementById('center');
+                    var foot=document.getElementById('foot');
+                    document.body.scrollTop=center.offsetHeight;        //foot.offsetTop;
+                    document.documentElement.scrollTop= center.offsetHeight;     ///foot.offsetTop;
+                    this.scroll=document.documentElement.scrollTop||document.body.scrollTop;
+//                    console.log(this.scroll)
+//                    console.log(center.offsetHeight)
+//                    console.log(foot.offsetTop)
+                },100)
+            },
+            back(){
+                window.location='/main'
+            },
+            send(){
+                if(this.sendContent==''){
+                    this.$Message.info('请输入内容')
+                    return;
+                }
+                var time= new Date().toLocaleString();
+                var _this=this;
+                axios.post('/sendInfo',{
+                    sendname:this.sendname,
+                    name:this.sessionInfo.sessionNmae,
+                    content:this.sendContent,
+                    time:time
+                }).then(function(result){
+
+                    _this.getUserInfo();
+                    _this.scrollBottom();
+                    //console.log(result)
+                    var socket=io();
+                    socket.emit('chat',{
+                        whosend:_this.sessionInfo.sessionNmae,
+                        sendwho:_this.sendname,
+                        content:_this.sendContent,
+                        time:time
+                    })
+                    _this.sendContent='';
+                })
+
+
+            },
+            getSession(){
+                var _this=this;
+                axios.get('/getsession').then(function(result){
+                    _this.sessionInfo=result.data;
+                    _this.getUserInfo();
+                    _this.socket();
+                })
+            },
+            getUserInfo(){
+                var _this=this;
+                axios.get('/getuserinfo?name='+this.sessionInfo.sessionNmae)
+                        .then(function(result){
+                            var index=getChatInfo(result.data.msg[0].liantian);
+                            _this.liaotian=result.data.msg[0].liantian[index];
+                            //console.log( _this.liaotian)
+                            _this.clearweidu();
+
+                        })
+            }
+        }
+    })
+
+
+    function getChatInfo(arr){
+        var name=localStorage.getItem("name");
+        for (var i=0;i<arr.length;i++){
+            if(arr[i].ltname==name){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+
+</script>
+</html>

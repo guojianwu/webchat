@@ -1,0 +1,139 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+
+#top{
+  position: fixed;
+  top:0;
+  width: 100%;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  background: black;
+  span{
+    font-size: 0.5rem;
+    color: white;
+    padding: 0.3rem;
+  }
+}
+
+#foot{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  background: white;
+  border-top: 1px solid #cccccc;
+  font-size: 0;
+  span{
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+    font-size: 0.4rem;
+    color: grey;
+    i{
+      vertical-align: middle;
+    }
+  }
+}
+
+#center {
+  margin-top: 1.2rem;
+  margin-bottom: 1.5rem;
+  #wx{
+    .wx_list{
+      clear: both;
+      height: 1.8rem;
+      border-bottom: 1px solid #cccccc;
+      img{
+        padding: 0.15rem 0.25rem;
+        width: 1.95rem;
+        height: 1.7rem;
+        float: left;
+      }
+      .wx_list_title{
+        padding-top: 0.15rem;
+        font-size: 0.45rem;
+        font-weight: bold;
+        font-family : '微软雅黑','宋体', 'New York';
+      }
+      .wx_list_content{
+        font-size: 0.23rem;
+        font-family : '微软雅黑','宋体', 'New York';
+        font-size: 0.35rem;
+      }
+    }
+  }
+
+
+  #txl{
+    .txl_list{
+      border-bottom: 1px solid #cccccc;
+      clear: both;
+      img{
+        padding: 0.15rem 0.25rem;
+        width: 1.55rem;
+        height: 1.3rem;
+        float: left;
+      }
+      .wx_list_name{
+        height: 1.3rem;
+        line-height: 1.3rem;
+        font-size: 0.35rem;
+      }
+    }
+  }
+
+  #fx ,#wo{
+    .fx_list{
+      clear: both;
+      height: 1.2rem;
+      line-height: 1.3rem;
+      background: rgba(204, 204, 204, 0.31);
+      img{
+        margin: 0.2rem 0.2rem;
+        float: left;
+        width:0.8rem;
+        height: 0.8rem;
+      }
+      p{
+        font-size: 0.35rem;
+      }
+    }
+  }
+
+  #wo{
+    .wo_list{
+      background: rgba(204, 204, 204, 0.31);
+      clear: both;
+      height: 2.2rem;
+      //line-height: 2.2rem;
+      img{
+        margin: 0.2rem 0.3rem;
+        float: left;
+        width: 2rem;
+        height: 1.7rem;
+      }
+      .wo_list_name{
+        padding-top: 0.4rem;
+        font-size: 0.46rem;
+        font-weight: bold;
+        font-family : '微软雅黑','宋体', 'New York';
+      }
+      .wo_list_number{
+        font-size: 0.35rem;
+      }
+    }
+  }
+
+}
+
+
+
+
+#foot .active{
+   color: #42d885;
+ }

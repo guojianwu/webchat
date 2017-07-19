@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#top {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  background: black;
+}
+#top .back {
+  font-size: 0.7rem;
+  padding: 0 0.2rem;
+  font-weight: bold;
+  color: white;
+}
+#top span {
+  font-size: 0.45rem;
+  font-weight: 100;
+  color: white;
+}
+#foot {
+  position: fixed;
+  bottom: 0;
+  width: 10rem;
+  font-size: 0;
+  height: 0.9rem;
+}
+#foot .text {
+  width: 80%;
+  font-size: 0.45rem;
+  border: 1px solid black;
+  height: 0.9rem;
+  vertical-align: middle;
+}
+#foot .send {
+  font-size: 0.4rem;
+  width: 20%;
+  border: 1px solid black;
+  height: 0.9rem;
+  vertical-align: middle;
+}
+#center {
+  margin-top: 1.3rem;
+  margin-bottom: 1.3rem;
+  /*clear: both;*/
+}
+#center .comn {
+  /*clear: both;*/
+  margin-bottom: 0.3rem;
+  /*margin-top: 0.2rem;*/
+}
+#center .comn .img {
+  margin-left: 0.1rem;
+  width: 13%;
+  display: inline-block;
+  /*vertical-align: top;*/
+}
+#center .comn img {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+}
+#center .comn .con {
+  margin-left: 0.1rem;
+  padding: 0.1rem;
+  width: 65%;
+  display: inline-block;
+  border-radius: 0.1rem;
+  background: rgba(204, 204, 204, 0.45);
+}
+#center .comn .con .text {
+  font-size: 0.5rem;
+}
+#center .comn .con .time {
+  margin-top: 0.2rem;
+}
+#center .ziji {
+  /*margin-bottom: 1.2rem;*/
+  /*float: right;*/
+  /*clear: both;*/
+}
+#center .ziji .img {
+  /*clear: both;*/
+  float: right;
+
+  /*vertical-align: top;*/
+}
+/*#center .ziji img {*/
+  /*float: right;*/
+  /*!*margin-right: 0.1rem;*!*/
+/*}*/
+
+#center .ziji .con {
+  /*float: right;*/
+  /*margin-bottom: 0.3rem;*/
+  margin-left: 20%;
+
+  background: rgba(56, 205, 102, 0.55);
+}
+
+

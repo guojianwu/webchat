@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/iview@2.0.0-rc.18/dist/styles/iview.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div id="app">
+
+    <div id="login" v-show="showCenter==1">
+        <p>
+            <input type="text" placeholder="用户名" v-model="loginUserName">
+        </p>
+        <p>
+            <input type="password" placeholder="密码"  v-model="loginPassword">
+        </p>
+        <p>
+           <button @click="login">登录</button>
+        </p>
+
+    </div>
+    <div id="regist" v-show="showCenter==2">
+        <p>
+            <input type="text" placeholder="用户名"  v-model="registUaerName">
+        </p>
+        <p>
+            <input type="password" placeholder="密码"  v-model="registPassword">
+        </p>
+        <p>
+            <input type="password" placeholder="确认密码"  v-model="registRepassword">
+        </p>
+        <p><button @click="regist">注册</button></p>
+
+    </div>
+
+    <p id="tishi">已有账号?<span @click="showCenter=1">登录</span>: <span @click="showCenter=2">注册</span> </p>
+
+</div>
+
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<script src="https://unpkg.com/iview@2.0.0-rc.18/dist/iview.min.js"></script>
+<script src="/js/rem.js"></script>
+<script>
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            showCenter:1,
+            loginUserName:'',
+            loginPassword:'',
+            registUaerName:'',
+            registPassword:'',
+            registRepassword:''
+        },
+        methods:{
+            regist(){
+                if(this.registUaerName=='' || this.registPassword==''|| this.registRepassword==''){
+                    this.$Message.info({
+                        content: '请完善信息',
+                        duration: 2,
+                        closable: true
+                    });
+                    return
+                }
+                var _this=this;
+                axios.post('/regist',{
+                    name:this.registUaerName,
+                    password:this.registPassword,
+                    repassword:this.registRepassword
+                }).then(function(result){
+                    if(result.data.code==1){
+                        _this.$Message.success(result.data.msg+'请登录');
+                        setTimeout(function(){
+                            _this.showCenter=1;
+                        },1500)
+
+
+                    }else {
+                        _this.$Message.warning(result.data.msg);
+                    }
+                })
+            },
+            login(){
+                var _this=this;
+                if(this.loginUserName=='' || this.loginPassword==''){
+                    this.$Message.info({
+                        content: '请完善信息',
+                        duration: 2,
+                        closable: true
+                    });
+                    return
+                }
+                var time=
+                axios.post('/login',{
+                    name:this.loginUserName,
+                    password:this.loginPassword
+                }).then(function(result){
+                    if(result.data.code==1){
+                        _this.$Message.success(result.data.msg);
+                        setTimeout(function(){
+                            window.location='/main'
+                        },1500)
+
+
+                    }else {
+                        _this.$Message.warning(result.data.msg);
+                    }
+                })
+
+            }
+        }
+    })
+
+</script>
+</html>

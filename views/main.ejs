@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/iview@2.0.0-rc.18/dist/styles/iview.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+</head>
+<body>
+<div id="app">
+    <div id="top">
+        <span>微信</span>
+        <span class="add" @click="addHaoyou">＋</span>
+        <span class="dec" @click="dec=!dec">－</span>
+    </div>
+
+
+    <div id="center">
+        <!--微信-->
+        <div id="wx" v-show="showCenter==1">
+
+            <div class="wx_list" v-for="lt in liaotianInfo">
+                <div @click="tochat(lt.ltname)">
+                    <img :src="imageQiaZui+lt.ltname+imageHouZui" alt="">
+                    <p class="wx_list_title">{{lt.ltname}}</p>
+                    <p class="wx_list_content">{{lt.ltcontent[lt.ltcontent.length-1].ltneiron}}</p>
+                    <span class="weidu" v-show="lt.weidu!=0">{{lt.weidu}}</span>
+                </div>
+
+                <span class="dec" v-show="dec&&showCenter==1" @click.prevent="decliaotian(lt.ltname)">删除</span>
+            </div>
+            <!--<div class="wx_list">-->
+                <!--<img src="/images/aa.jpg" alt="">-->
+                <!--<p class="wx_list_title">郭建武</p>-->
+                <!--<p class="wx_list_content">发的内容</p>-->
+            <!--</div>-->
+
+        </div>
+
+
+
+        <!--通信录-->
+        <div id="txl"  v-show="showCenter==2">
+
+            <div class="txl_list" v-for="hy in haoyou">
+                <a @click="tochat(hy.hyname)">
+                    <img :src="imageQiaZui+hy.hyname+imageHouZui" alt="">
+                    <p class="wx_list_name">{{hy.hyname}}</p>
+                </a>
+                <span class="dec" v-show="dec&&showCenter==2" @click="dechaoyou(hy.hyname)">删除</span>
+            </div>
+
+
+        </div>
+
+        <!--发现-->
+        <div id="fx" v-show="showCenter==3">
+            <div class="fx_list">
+                <img src="/images/pyq.png" alt="">
+                <p class="fx_list_type">朋友圈</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/sys.png" alt="">
+                <p class="fx_list_type">扫一扫</p>
+            </div>
+            <div class="fx_list">
+                <img src="/images/yyy.png" alt="">
+                <p class="fx_list_type">摇一摇</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem">
+                <img src="/images/fjdr.png" alt="">
+                <p class="fx_list_type">附近的人</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/gw.png" alt="">
+                <p class="fx_list_type">购物</p>
+            </div>
+            <div class="fx_list">
+                <img src="/images/yx.png" alt="">
+                <p class="fx_list_type">游戏</p>
+            </div>
+        </div>
+
+        <!--我-->
+        <div id="wo" v-show="showCenter==4">
+            <div class="wo_list">
+                <!--<img :src="imageQiaZui+sessionInfo.sessionNmae+imageHouZui" alt="">-->
+                <el-upload
+                        class="avatar-uploader"
+                        action="/temptouxiang"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                    <!--<img v-if="imageUrl" :src="imageQiaZui+sessionInfo.sessionNmae+imageHouZui" class="avatar">-->
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+
+                <p class="wo_list_name">{{sessionInfo.sessionNmae}}</p>
+                <!--<p class="wo_list_number">GJW-同学</p>-->
+            </div>
+
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/xiangce.png" alt="">
+                <p class="fx_list_type">相册</p>
+            </div>
+            <div class="fx_list">
+                <img src="/images/shouc.png" alt="">
+                <p class="fx_list_type">收藏</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/qianbao.png" alt="">
+                <p class="fx_list_type">钱包</p>
+            </div>
+            <div class="fx_list">
+                <img src="/images/kabao.png" alt="">
+                <p class="fx_list_type">卡包</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/biaoqing.png" alt="">
+                <p class="fx_list_type">表情</p>
+            </div>
+            <div class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc">
+                <img src="/images/shezhi.png" alt="">
+                <p class="fx_list_type">设置</p>
+            </div>
+            <div @click="loginout" class="fx_list" style="margin-top: 0.3rem;border-bottom: 1px solid #cccccc;text-align: center;background: rgba(255, 0, 0, 0.51)">
+                <p class="fx_list_type">退出</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="foot">
+        <span @click="showCenter=1;dec=false" :class="showCenter==1? 'active':''">微信<Icon type="chatbubble-working"  :color="showCenter==1? '#42d885':'grey'" size="20"> </Icon></span>
+        <span @click="showCenter=2;dec=false" :class="showCenter==2? 'active':''">通信录<Icon type="person-stalker" :color="showCenter==2? '#42d885':'grey'" size="20"></Icon></span>
+        <span @click="showCenter=3;dec=false" :class="showCenter==3? 'active':''">发现<Icon type="ios-timer" :color="showCenter==3? '#42d885':'grey'" size="20"></Icon></span>
+        <span @click="showCenter=4;dec=false" :class="showCenter==4? 'active':''">我<Icon type="person" :color="showCenter==4? '#42d885':'grey'" size="20"></Icon></span>
+    </div>
+
+
+    <Modal
+            v-model="modal1"
+            title="添加好友"
+            ok-text="添加"
+            @on-ok="ok"
+            @on-cancel="cancel">
+        <p><input type="text" placeholder="请输入好友用户名" v-model="addHaoYouName" style="width: 100%;height: 1rem;font-size: 0.45rem;"></p>
+
+    </Modal>
+
+
+</div>
+
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<script src="https://unpkg.com/iview@2.0.0-rc.18/dist/iview.min.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="/js/rem.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            dec:false,
+            imageUrl: '',  //imageQiaZui+sessionInfo.sessionNmae+imageHouZui
+            imageQiaZui:'/touxiang/',
+            imageHouZui:'.jpg',
+            url:'/chat?id=',
+            showCenter:1,
+            iconColor:'green',
+            sessionInfo:[],
+            modal1:false,
+            addHaoYouName:'',
+            haoyou:[],
+            liaotianInfo:[]
+        },
+//        computed:{
+//            imageUrl(){
+//                return this.imageQiaZui+this.sessionInfo.sessionNmae+this.imageHouZui
+//            }
+//        },
+        created(){
+            this.getSession();
+           // this.imageUrl=this.imageQiaZui+this.sessionInfo.sessionNmae+this.imageHouZui;
+//            console.log(this.imageUrl)
+        },
+        methods:{
+            dechaoyou(hyname){
+                var _this=this;
+                _this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您确定删除该好友</p>',
+                    onOk: function(){
+                        axios.post('/dechaoyou',{
+                            name:_this.sessionInfo.sessionNmae,
+                            decwho:hyname
+
+                        }).then(function(result){
+                            _this.$Message.info(result.data.msg)
+                            _this.getUserInfo();
+//                            console.log(result)
+                        });
+                    },
+
+                });
+            },
+            decliaotian(name){
+                var _this=this;
+                _this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您确定删除</p>',
+                    onOk: function(){
+                        axios.post('/decliaotian',{
+                            name:_this.sessionInfo.sessionNmae,
+                            decwho:name
+
+                        }).then(function(result){
+                            _this.$Message.info(result.data.msg)
+                            _this.getUserInfo();
+//                            console.log(result)
+                        });
+                    },
+
+                });
+
+            },
+            socket(){
+                var socket=io();
+                var _this=this
+                socket.on(this.sessionInfo.sessionNmae,function(msg){
+                    //console.log(msg);
+                    _this.getUserInfo();
+                })
+            },
+            tochat(name){
+                localStorage.setItem("name", name);
+                window.location='/chat'
+            },
+            addHaoyou(){
+                this.modal1=true
+            },
+            ok () {
+                if(this.addHaoYouName==''){
+                    this.$Message.info('请输入好友用户名');
+                    return;
+                }
+
+                var _this=this;
+                axios.post('/addhaoyou',{
+                    name:this.sessionInfo.sessionNmae,
+                    addHaoYouName:this.addHaoYouName
+
+                }).then(function(result){
+//                    console.log(result)
+                    _this.addHaoYouName=''
+                    _this.getUserInfo();
+                    _this.$Message.info(result.data.msg)
+                });
+
+            },
+            cancel () {
+//                this.$Message.info('点击了取消');
+            },
+            getSession(){
+                var _this=this;
+                axios.get('/getsession').then(function(result){
+                    _this.sessionInfo=result.data;
+                    _this.getUserInfo();
+
+                    _this.socket();
+                })
+            },
+            getUserInfo(){
+                var _this=this;
+                axios.get('/getuserinfo?name='+this.sessionInfo.sessionNmae)
+                        .then(function(result){
+                            _this.haoyou=result.data.msg[0].haoyou;
+                            _this.liaotianInfo=result.data.msg[0].liantian.reverse();
+                            _this.imageUrl=_this.imageQiaZui+_this.sessionInfo.sessionNmae+_this.imageHouZui;
+//                            console.log( _this.haoyou)
+                            //console.log( _this.liaotianInfo)
+//                            console.log(result.data.msg[0].liantian)
+                        })
+            },
+            loginout(){
+                var _this=this;
+
+                _this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您确定退出</p>',
+                    onOk: function(){
+                        axios.get('/loginout').then(function(result){
+                            _this.$Message.info('退出成功');
+                            setTimeout(function(){
+                                window.location='/'
+                            },1000)
+                        })
+                    },
+
+                });
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        }
+    })
+
+</script>
+</html>

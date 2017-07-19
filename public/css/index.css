@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+#app{
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/ydy.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*-webkit-filter: blur(1px)*/
+}
+#top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    background: black;
+}
+#top span {
+     font-size: 0.5rem;
+     color: white;
+     padding: 0.3rem;
+ }
+
+#login ,#regist{
+    width: 100%;
+    height: 50%;
+    text-align: center;
+    padding-top: 1.6rem;
+}
+
+#login input ,#regist input{
+    width: 80%;
+
+    background: #cccccc;
+    font-size: 0.45rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    border: 1px solid #cccccc;
+    border-radius: 0.1rem;
+    padding-left: 0.1rem;
+}
+
+#login button ,#regist button{
+    width: 2rem;
+    height: 1rem;
+    margin-top: 0.2rem;
+    border-radius: 0.2rem;
+    font-size: 0.45rem;
+    border: none;
+    background: #cccccc;
+}
+#tishi{
+    width: 80%;
+    margin: 0 auto;
+    text-align: right;
+    font-size: 0.45rem;
+    margin-top: 0.3rem;
+    color: black;
+}
+#tishi span{
+    color: rgba(127, 127, 127, 0.94);
+    font-size: 0.48rem;
+    border-bottom: 1px solid   rgba(127, 127, 127, 0.94);
+    background: rgb(32, 32, 35);
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+}
